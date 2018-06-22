@@ -25,6 +25,31 @@ LOAD   DATA  LOCAL INFILE '/var/lib/mysql-files/pre_key_words_rule.txt' INTO   T
 LOAD   DATA  LOCAL INFILE '/var/lib/mysql-files/pre_key_words_index.txt' INTO   TABLE eums_sms_core.`pre_key_words_index`;
 LOAD   DATA  LOCAL INFILE '/var/lib/mysql-files/pre_key_words_data.txt' INTO   TABLE eums_sms_core.`pre_key_words_data`;
 
+/*修改表结构*/
+--创建测试表
+create table test(
+    id int;
+);
+
+--add支持多列，change/drop需要在每列前添加关键字，逗号隔开，'column'可有可无
+
+--添加多列
+alter table test add (c1 char(1),c2 char(1));   --正确，add支持多列
+alter table test add column (c1 char(1),c2 char(1));    --正确
+alter table test add c1 char(1),add c2 char(1);     --正确
+
+--修改多列
+alter table test change c1 c3 char(1),change c2 c4 char(1);     --正确
+alter table test change column c1 c3 char(1),change column c2 c4 char(1);       --正确
+
+alter table test change (c1 c3 char(1),c2 c4 char(1));      --错误
+
+--删除多列
+alter table test drop c1,drop c2;   --正确
+alter table test drop column c1,drop column c2;     --正确
+
+alter table test drop c1,c2;    --错误
+alter table test drop (c1,c2);  --错误
 
 
 

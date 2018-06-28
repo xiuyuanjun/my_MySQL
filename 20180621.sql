@@ -105,5 +105,19 @@ show global status like 'Thread%';
 --查询服务器thread_cache_size配置：
 show variables like 'thread_cache_size';
 
+--mysql 中sum (if())
+--先来一个简单的sum
+select sum(qty) as total_qty from inventory_product group by product_id
+--这样就会统计出所有product的qty.
+--但是很不幸，我们的系统里面居然有qty为负值。而我只想统计那些正值的qty，加上if function就可以了。 SQL为：
+select sum(if(qty > 0, qty, 0)) as total_qty   from inventory_product group by product_id
+--意思是如果qty > 0, 将qty的值累加到total_qty, 否则将0累加到total_qty.
+--再加强一点：
+select
+sum( if( qty > 0, qty, 0)) as total_qty   ,
+sum( if( qty < 0, 1, 0 )) as negative_qty_count
+from inventory_product 
+group by product_id
+
 
 

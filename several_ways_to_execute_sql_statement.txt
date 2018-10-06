@@ -1,0 +1,53 @@
+1.直接输入sql执行
+
+MySQL> select now();
++---------------------+
+| now() |
++---------------------+
+| 2013-09-18 13:55:45 |
++---------------------+
+1 row in set (0.00 sec)
+
+2.执行编写好的sql脚本
+
+mysql> source H:/1.sql
++---------------------+
+| now() |
++---------------------+
+| 2013-09-18 13:54:04 |
++---------------------+
+1 row in set (0.00 sec)
+
+3.select ...into outfile 方式执行sql
+
+mysql> select now() into outfile 'h:/data/2.sql';
+Query OK, 1 row affected (0.00 sec)
+
+4.使用mysql命令执行
+
+H:\>mysql -uaHmin -p -e "select now()"
+Enter passworH: ****
++---------------------+
+| now() |
++---------------------+
+| 2013-09-18 13:57:09 |
++---------------------+
+
+5.mysql命令执行sql，并将查询结果保存到文本中
+
+a)执行简单sql
+
+mysql -uaHmin -proot test -e "select now()" -N >H:/work/target1.txt
+如果sql很长，这种方式就不是很适合了。
+
+b）执行复杂sql
+
+可以将复杂的sql事先编辑好，存放到文本中在执行。
+H:\> mysql -uroot -pmypwH -h127.0.0.1 -p3306 test < H:/work/source.sql > H:/work/target.txt
+
+将最后一种执行方式加上操作系统的定时任务，就可以在mysql中实现定时执行sql，并保存执行结果的目的了。
+
+参考：官方文档中的 3.5. Using mysql in Batch Mode
+http://dev.mysql.com/doc/refman/5.6/en/batch-mode.html
+
+以上就是小编为大家带来的mysql命令行中执行sql的几种方式总结全部内容了，希望大家多多支持脚本之家~
